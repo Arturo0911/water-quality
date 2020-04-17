@@ -1,4 +1,7 @@
 import random
+import numbers
+from decimal import *
+
 ListaComponentesIBackup2 = []
 ListaComponentesI = ["Antimonio, Sb","Arsénico, As","Bario, Ba","Boro, B","Cadmio, Cd","Cianuros, CN",
                      "Cloro libre residual* ","Cobre, Cu","Cromo, Cr","Fluoruros","Manganeso, Mn","Mercurio, Hg",
@@ -41,6 +44,38 @@ elif (valor1 <= 4) and (valor2 > 2):
     print("primer numero correcto")
     print("segundo numero incorrecto")
 """
+
+
+#valor2 = int (input("ingrese un numero menor o igual que 2: "))
+#valor1 = float
+
+
+
+
+
+
+
+"""
+while True:
+    valor = input("ingrese un numero menor o igual que 2: ")
+    num = str(valor)
+    if (num.isdecimal()):
+        print("Eureka", type(valor))
+        break
+    else:
+        print("LO INGRESADO NO Es numero")
+"""
+
+while True:
+    try:
+        numero = float (input(": "))
+        print("OK")
+        print(numero)
+        break
+    except:
+        print("ESTE NUMERO NO ES FLOTANTE")
+
+
 
 
 Turbiedad = [3,4,5,6,7,8]

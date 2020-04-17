@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import random
-#import serial
 import os
 import threading
 import time
@@ -22,7 +21,7 @@ from ttkthemes import themed_tk as tk
 from datetime import datetime, date, time, timedelta
 import calendar
 from tkinter import messagebox
-
+import FUNCIONES_AGUA
 day = date.today()
 
 
@@ -62,8 +61,97 @@ def add_to_playlist(filename):
     playlist.insert(index, filename_path)
     index += 1
 
+def Informacion():
+    def func():
+
+        l2.configure(text=cb.get())
+        if (cb.get() == "Inorgánicos"):
+            Nroot = tk.ThemedTk()
+            Nroot.get_themes()  # Returns a list of all themes that can be set
+            Nroot.set_theme("plastik")  # Sets an available # theme
+            #w = Canvas(Nroot, width=100, height=100)
+            #w.pack()
+
+            statusbar = ttk.Label(Nroot, text="BIENVENIDOS AGRARIOS", relief=SUNKEN, anchor=W, font='Times 10 italic')
+            statusbar.pack(side=BOTTOM, fill=X)
+            menubar = Menu(Nroot)
+            Nroot.config(menu=menubar)
+            subMenu = Menu(menubar, tearoff=0)
+
+            #menubar.add_cascade(label="File", menu=subMenu)
+            #subMenu.add_command(label="Exit", command=root.destroy)
+
+            Nroot.geometry("350x150")
+            Nroot.title("UNIVERSIDAD AGRARIA DEL ECUADOR")
+            Nroot.iconbitmap(r'descarga_gMJ_icon.ico ')
+            leftframe = Frame(Nroot)
+            leftframe.pack(side=LEFT, padx=30, pady=30)
+
+            Label1 = ttk.Label(leftframe, text=" Valores inorgánicos ")
+            Label1.grid(row=0, column=0, padx=10)
+
+            none1 = ttk.Label(leftframe, text="")
+            none1.grid(row=0, column=1, padx=10)
+
+            medida = ttk.Label(leftframe, text="mg/l")
+            medida.grid(row=0, column=2, padx=10)
+
+            none2 = ttk.Label(leftframe, text="")
+            none2.grid(row=0, column=3, padx=10)
+
+            resultado = ttk.Label(leftframe, text="3.29")
+            resultado.grid(row=0, column=4, padx=10)
+
+
+            #======================================================================================================
+
+            agua = ttk.Label(leftframe, text=" Turbiedad del agua")
+            agua.grid(row=1, column=0, padx=10)
+
+            none3 = ttk.Label(leftframe, text="")
+            none3.grid(row=1, column=1, padx=10)
+
+            medida2 = ttk.Label(leftframe, text="Pt-Cu")
+            medida2.grid(row=1, column=2, padx=10)
+
+            none4 = ttk.Label(leftframe, text="")
+            none4.grid(row=1, column=3, padx=10)
+
+            resultado2 = ttk.Label(leftframe, text="5")
+            resultado2.grid(row=1, column=4, padx=10)
+
+
+            Nroot.mainloop()
+
+
+
+
+    # Frame2 = Frame(win)   #FRAME SUPERIOR
+    # Frame2.pack(side = TOP, padx=30, pady=10)
+    win = Toplevel()
+    win.geometry('150x150')
+    course = ["Orgánicos", "Inorgánicos"]
+
+
+
+    l1 = ttk.Label(win, text="Tabla de VAlores")
+    l1.grid(column=3, row=0)
+    cb = ttk.Combobox(win, values=course, width=10)
+    cb.grid(column=3, row=1)
+    cb.current(0)
+    b = Button(win, text="Click Here", command=func)
+    b.grid(column=3, row=2)
+    l2 = ttk.Label(win, text="")
+    l2.grid(column=3, row=3)
+    win.mainloop()
+
+
+
+
+
+
 menubar.add_cascade(label="File", menu=subMenu)
-subMenu.add_command(label="Open", command=browse_file)
+subMenu.add_command(label="Open", command=Informacion)
 subMenu.add_command(label="Exit", command=root.destroy)
 
 def about_us():
@@ -80,7 +168,7 @@ menubar.add_cascade(label="Help", menu=subMenu)
 subMenu.add_command(label="About Us", command=about_us)
 
 
-root.geometry("1000x500")
+root.geometry("1100x500")
 root.title("UNIVERSIDAD AGRARIA DEL ECUADOR")
 root.iconbitmap(r'descarga_gMJ_icon.ico ')
 root.resizable(False,False)
@@ -121,6 +209,29 @@ ListaComponentesO = ["Benzo [a]pireno", "Benceno", "Tolueno", "Xileno", "Estiren
                      "Alacloro","Aldicarb","Aldrín y Dieldrín ","Carbofuran","Clorpirifós","DDT y metabolitos","1,2-Dibromo-3-cloropropano",
                      "1,3-Dicloropropeno","Dimetoato","Endrín","Terbutilazina","Clordano"] #COMPONENTES ORGÁNICOS
 
+VALUES = {  # ===========================================VALORES INORGANICAS
+        "Antimonio, Sb": 0.02, "Arsénico, As": 0.01, "Bario, Ba": 0.7, "Boro, B": 0.5,
+        "Cadmio, Cd": 0.003, "Cianuros, CN": 0.07, "Cloro libre residual* ": 0.3,
+        "Cobre, Cu": 2.0, "Cromo, Cr": 0.05, "Fluoruros": 1.5, "Manganeso, Mn": 0.4,
+        "Mercurio, Hg": 0.006, "Níquel, Ni": 0.07, "Nitratos, NO3": 50,
+        "Nitritos, NO2": 0.2, "Plomo, Pb": 0.01, "Selenio, Se": 0.01
+            }
+
+VALUES2 = {  # ===========================================VALORES ORGANICAS
+        "Benzo [a]pireno": 0.0007, "Benceno": 0.01, "Tolueno": 0.7, "Xileno": 0.5,
+        "Estireno": 0.02, "1,2dicloroetano": 0.03, "Cloruro de vinilo": 0.0003,
+        "Tricloroeteno": 0.02, "Tetracloroeteno": 0.04, "Di(2-etilhexil) ftalato": 0.008, "Acrylamida": 0.0005,
+        "Epiclorohidrina": 0.0004, "Hexaclorobutadieno": 0.0006, "1,2Dibromoetano": 0.0004,
+        "1,4- Dioxano": 0.05, "Acido Nitrilotriacético": 0.2, "Isoproturón": 0.009, "Lindano": 0.002,
+        "Pendimetalina": 0.02, "Pentaclorofenol": 0.009,
+        "Dicloroprop": 0.1, "Alacloro": 0.02, "Aldicarb": 0.01, "Aldrín y Dieldrín ": 0.00003, "Carbofuran": 0.007,
+        "Clorpirifós": 0.03,
+        "DDT y metabolitos": 0.01, "1,2-Dibromo-3-cloropropano": 0.001, "1,3-Dicloropropeno": 0.02,
+        "Dimetoato": 0.006,
+        "Endrín": 0.0006, "Terbutilazina": 0.007, "Clordano": 0.0002
+    }
+
+
 for j in range (4):
     b = ListaComponentesO[random.randint(0,10)]
     ListaComponentesO.remove(b)
@@ -148,60 +259,91 @@ def Calculo_de_valores_organicos_inorganicos ():
                         "Nitritos, NO2":0.2, "Plomo, Pb":0.01, "Selenio, Se":0.01
                     }
 
+    while not False:
+        try:
+            EI1 = float(EntVariable1.get())  # PRIMERA ENTRADA DE LOS COMPONENTES INORGANICOS
 
+            EI2 = float(EntVariable2.get())  # SEGUNDA ENTRADA DE LOS COMPONENTES INORGANICOS
 
-    # ====================================================================================
+            EI3 = float(EntVariable3.get())  # TERCERA ENTRADA DE LOS COMPONENTES INORGANICOS
 
-    EI1 = float(EntVariable1.get()) # PRIMERA ENTRADA DE LOS COMPONENTES INORGANICOS
+            EI4 = float(EntVariable4.get())  # CUARTA ENTRADA DE LOS COMPONENTES INORGANICOS
 
-    EI2 = float(EntVariable2.get()) # SEGUNDA ENTRADA DE LOS COMPONENTES INORGANICOS
+            messagebox.showinfo('CONTINUE', '.........')
+            if (EI1 <= INORGANICOS[ListaComponentesIBackup[0]]):
+                SumaInorganica = SumaInorganica + EI1
 
-    EI3 = float(EntVariable3.get()) # TERCERA ENTRADA DE LOS COMPONENTES INORGANICOS
+                if (EI2 <= INORGANICOS[ListaComponentesIBackup[1]]):
+                    SumaInorganica = SumaInorganica + EI2
 
-    EI4 = float(EntVariable4.get()) # CUARTA ENTRADA DE LOS COMPONENTES INORGANICOS
+                    if (EI3 <= INORGANICOS[ListaComponentesIBackup[2]]):
+                        SumaInorganica = SumaInorganica + EI3
 
-    #====================================================================================
+                        if (EI4 <= INORGANICOS[ListaComponentesIBackup[3]]):
+                            SumaInorganica = SumaInorganica + EI4
+                            if (SumaInorganica <= 3.29):
+                                Suma = (str(SumaInorganica) + "mg/l")
 
-    if (EI1 <= INORGANICOS[ListaComponentesIBackup[0]]):
-        SumaInorganica = SumaInorganica + EI1
+                                messagebox.showinfo('VALUE', Suma)
 
-        if (EI2 <= INORGANICOS[ListaComponentesIBackup[1]]):
-            SumaInorganica = SumaInorganica + EI2
+                                d = int(((EI1 / (INORGANICOS[ListaComponentesIBackup[0]])) * 25))
+                                f = int(((EI2 / (INORGANICOS[ListaComponentesIBackup[1]])) * 25))
+                                c = int(((EI3 / (INORGANICOS[ListaComponentesIBackup[2]])) * 25))
+                                r = int(((EI4 / (INORGANICOS[ListaComponentesIBackup[3]])) * 25))
+                                graficar = [d, f, c, r]
+                                labels = ListaComponentesIBackup[0], ListaComponentesIBackup[1], ListaComponentesIBackup[2], ListaComponentesIBackup[3]
 
-            if (EI3 <= INORGANICOS[ListaComponentesIBackup[2]]):
-                SumaInorganica = SumaInorganica + EI3
+                                explode = (0, 0.1, 0, 0)
+                                col = ('#0da0c1', '#e39106', '#25b413', '#b6e2ec')
+                                _, _, arturo = pyplot.pie(graficar, explode=explode, labels=labels, colors=col,
+                                                          autopct='%1.1f%%')
 
-                if (EI4 <= INORGANICOS[ListaComponentesIBackup[3]]):
-                    SumaInorganica = SumaInorganica + EI4
-                    if (SumaInorganica <= 3.29):
-                        Suma = (str(SumaInorganica) + "mg/l")
+                                for tex in arturo:
+                                    tex.set_color('white')
+                                pyplot.axis('equal')
+                                pyplot.title('Grafica de datos')
+                                pyplot.show()
+                            else:
+                                messagebox.showwarning('CAUTION ',
+                                                       'El valor de la suma ' + str(
+                                                           SumaInorganica) + 'mg/l excede el limite permitido')
+                                EntVariable1.delete(0, END)
+                                EntVariable2.delete(0, END)
+                                EntVariable3.delete(0, END)
+                                EntVariable4.delete(0, END)
 
-                        messagebox.showinfo('VALUE', Suma)
+                        else:
+                            messagebox.showwarning('CAUTION ',
+                                                   'El valor' + ListaComponentesIBackup[
+                                                       3] + ' excede el limite permitido')
+                            EntVariable4.delete(0, END)
                     else:
                         messagebox.showwarning('CAUTION ',
-                                               'El valor de la suma ' + str(SumaInorganica)+ 'mg/l excede el limite permitido')
-                        EntVariable1.delete(0, END)
-                        EntVariable2.delete(0, END)
+                                               'El valor' + ListaComponentesIBackup[2] + ' excede el limite permitido')
                         EntVariable3.delete(0, END)
-                        EntVariable4.delete(0, END)
 
                 else:
                     messagebox.showwarning('CAUTION ',
-                                           'El valor' + ListaComponentesIBackup[3] + ' excede el limite permitido')
-                    EntVariable4.delete(0, END)
+                                           'El valor' + ListaComponentesIBackup[1] + ' excede el limite permitido')
+                    EntVariable2.delete(0, END)
             else:
                 messagebox.showwarning('CAUTION ',
-                                       'El valor' + ListaComponentesIBackup[2] + ' excede el limite permitido')
-                EntVariable3.delete(0, END)
-
-        else:
-            messagebox.showwarning('CAUTION ',
-                                   'El valor' + ListaComponentesIBackup[1] + ' excede el limite permitido')
+                                       'El valor' + ListaComponentesIBackup[0] + ' excede el limite permitido')
+                EntVariable1.delete(0, END)
+            break
+        except:
+            messagebox.showerror('ERROR', 'OTRA VEZ :v')
+            EntVariable1.delete(0, END)
             EntVariable2.delete(0, END)
-    else:
-        messagebox.showwarning ('CAUTION ',
-                                'El valor'+ListaComponentesIBackup[0]+' excede el limite permitido')
-        EntVariable1.delete(0,END)
+            EntVariable3.delete(0, END)
+            EntVariable4.delete(0, END)
+            break
+
+
+
+
+
+
 
 
     #=============================================================================================================================================
@@ -222,70 +364,140 @@ def Calculo_de_valores_organicos_organicos():
         "Endrín": 0.0006,"Terbutilazina": 0.007, "Clordano": 0.0002
     }
 
+    while not False:
+        try:
+            EI5 = float(EntVariable5.get())  # PRIMERA ENTRADA DE LOS COMPONENTES ORGANICOS
 
-    EI5 = float(EntVariable5.get())  # PRIMERA ENTRADA DE LOS COMPONENTES ORGANICOS
+            EI6 = float(EntVariable6.get())  # SEGUNDA ENTRADA DE LOS COMPONENTES ORGANICOS
 
-    EI6 = float(EntVariable6.get())  # SEGUNDA ENTRADA DE LOS COMPONENTES ORGANICOS
+            EI7 = float(EntVariable7.get())  # TERCERA ENTRADA DE LOS COMPONENTES ORGANICOS
 
-    EI7 = float(EntVariable7.get())  # TERCERA ENTRADA DE LOS COMPONENTES ORGANICOS
+            EI8 = float(EntVariable8.get())  # CUARTA ENTRADA DE LOS COMPONENTES ORGANICOS
+            messagebox.showinfo('CONTINUE', '.........')
 
-    EI8 = float(EntVariable8.get())  # CUARTA ENTRADA DE LOS COMPONENTES ORGANICOS
+            if (EI5 <= ORGANICOS[ListaComponentesIBackup2[0]]):
+                SumaOrganica = SumaOrganica + EI5
 
-    if (EI5 <= ORGANICOS[ListaComponentesIBackup2[0]]):
-        SumaOrganica = SumaOrganica + EI5
+                if (EI6 <= ORGANICOS[ListaComponentesIBackup2[1]]):
+                    SumaOrganica = SumaOrganica + EI6
 
-        if (EI6 <= ORGANICOS[ListaComponentesIBackup2[1]]):
-            SumaOrganica = SumaOrganica + EI6
+                    if (EI7 <= ORGANICOS[ListaComponentesIBackup2[2]]):
+                        SumaOrganica = SumaOrganica + EI7
 
-            if (EI7 <= ORGANICOS[ListaComponentesIBackup2[2]]):
-                SumaOrganica = SumaOrganica + EI7
+                        if (EI8 <= ORGANICOS[ListaComponentesIBackup2[3]]):
+                            SumaOrganica = SumaOrganica + EI8
+                            if (SumaOrganica <= 0.47):
+                                Suma2 = (str(SumaOrganica) + "mg/l")
+                                messagebox.showinfo('VALUE', Suma2)
 
-                if (EI8 <= ORGANICOS[ListaComponentesIBackup2[3]]):
-                    SumaOrganica = SumaOrganica + EI8
-                    if (SumaOrganica <= 0.47):
-                        Suma2 = (str(SumaOrganica) + "mg/l")
-                        messagebox.showinfo('VALUE', Suma2)
+                                ar = int(((EI5 / (ORGANICOS[ListaComponentesIBackup2[0]])) * 25))
+                                ju = int(((EI6 / (ORGANICOS[ListaComponentesIBackup2[1]])) * 25))
+                                jf = int(((EI7 / (ORGANICOS[ListaComponentesIBackup2[2]])) * 25))
+                                ev = int(((EI8 / (ORGANICOS[ListaComponentesIBackup2[3]])) * 25))
+                                graficar = [ar, ju, jf, ev]
+                                labels = ListaComponentesIBackup2[0], ListaComponentesIBackup2[1],ListaComponentesIBackup2[2], ListaComponentesIBackup2[3]
+
+                                explode = (0, 0.1, 0, 0)
+                                col = ('#0da0c1', '#e39106', '#25b413', '#b6e2ec')
+                                _, _, arturo = pyplot.pie(graficar, explode=explode, labels=labels, colors=col,
+                                                          autopct='%1.1f%%')
+
+                                for tex in arturo:
+                                    tex.set_color('white')
+                                pyplot.axis('equal')
+                                pyplot.title('Grafica de datos')
+                                pyplot.show()
+                            else:
+                                messagebox.showwarning('CAUTION ',
+                                                       'El valor de la suma ' + str(SumaOrganica)+ 'mg/l excede el limite permitido')
+                        else:
+                            messagebox.showwarning('CAUTION ',
+                                                   'El valor' + ListaComponentesIBackup2[3] + ' excede el limite permitido')
+                            EntVariable8.delete(0, END)
                     else:
                         messagebox.showwarning('CAUTION ',
-                                               'El valor de la suma ' + str(SumaOrganica)+ 'mg/l excede el limite permitido')
+                                               'El valor' + ListaComponentesIBackup2[2] + ' excede el limite permitido')
+                        EntVariable7.delete(0, END)
+
                 else:
                     messagebox.showwarning('CAUTION ',
-                                           'El valor' + ListaComponentesIBackup2[3] + ' excede el limite permitido')
-                    EntVariable8.delete(0, END)
+                                           'El valor' + ListaComponentesIBackup2[1] + ' excede el limite permitido')
+                    EntVariable6.delete(0, END)
             else:
-                messagebox.showwarning('CAUTION ',
-                                       'El valor' + ListaComponentesIBackup2[2] + ' excede el limite permitido')
-                EntVariable7.delete(0, END)
-
-        else:
-            messagebox.showwarning('CAUTION ',
-                                   'El valor' + ListaComponentesIBackup2[1] + ' excede el limite permitido')
+                messagebox.showwarning ('CAUTION ',
+                                        'El valor'+ListaComponentesIBackup2[0]+' excede el limite permitido')
+                EntVariable5.delete(0, END)
+            break
+        except:
+            messagebox.showerror('ERROR', 'OTRA VEZ :v')
+            EntVariable5.delete(0, END)
             EntVariable6.delete(0, END)
-    else:
-        messagebox.showwarning ('CAUTION ',
-                                'El valor'+ListaComponentesIBackup2[0]+' excede el limite permitido')
-        EntVariable5.delete(0, END)
+            EntVariable7.delete(0, END)
+            EntVariable8.delete(0, END)
+            break
 
 
     # ============================================================================================
 
+
 def Save_file():
-    ListaSave = [
-                float(EntVariable1.get()), float(EntVariable2.get()),
-                float(EntVariable3.get()), float(EntVariable4.get())
-                ]
+    nobjeto = str
+    nobjeto2 = str
+    # listaobjeto = Calculo_de_valores_organicos_inorganicos(nobjeto)
+    # listaobjeto2 = Calculo_de_valores_organicos_organicos(nobjeto2)
+
+    # NlistaInorganica
+
+    LISTA_SAVE_NOMBRES_INORGANICOS = [
+        ListaComponentesIBackup[0], ListaComponentesIBackup[1],
+        ListaComponentesIBackup[2], ListaComponentesIBackup[3]
+    ]
+
+    LISTA_SAVE_INORGANICA = [
+        float(EntVariable1.get()), float(EntVariable2.get()),
+        float(EntVariable3.get()), float(EntVariable4.get())
+    ]
+
+    # ======================================================================================================================
+
+    LISTA_SAVE_NOMBRES_ORGANICOS = [
+        ListaComponentesIBackup2[0], ListaComponentesIBackup2[1],
+        ListaComponentesIBackup2[2], ListaComponentesIBackup2[3]
+    ]
+
+    LISTA_SAVE_ORGANICA = [
+        float(EntVariable5.get()), float(EntVariable6.get()),
+        float(EntVariable7.get()), float(EntVariable8.get())
+    ]
+
+    # CREAREMOS 4 COLUMNAS PARA COLOCAR LOS VALORES DE ENTRADAS ORGÁNICAS E INORGÁNICAS  ENTRADAEXCEL
+
+    nombre = str(ENTRADAEXCEL.get())
     df = pd.DataFrame()
-    df['ELEMENTOS INORGANICOS'] = ListaSave[0::2]
-    df.to_excel('result.xlsx', index =False)# CONVERTIMOS A EXCEL
+
+    df['ELEMENTOS INORGÁNICOS'] = LISTA_SAVE_NOMBRES_INORGANICOS[0::2]
+    df['VALORES INORGÁNICOS'] = LISTA_SAVE_INORGANICA[1::2]
+    df['ELEMENTOS INORGÁNICOS'] = LISTA_SAVE_NOMBRES_ORGANICOS[2::2]
+    df['VALORES INORGÁNICOS'] = LISTA_SAVE_ORGANICA[3::2]
+
+    df.to_excel(nombre + '.xlsx', index=False)  # CONVERTIMOS A EXCEL
 
 def Graficar():
-    ListaGrafica = [EntVariable1.get(),EntVariable2.get(),EntVariable3.get(),EntVariable4.get(),
-                    EntVariable5.get(),EntVariable6.get(),EntVariable7.get(),EntVariable8.get()]
-    vals = np.array(ListaGrafica)
-    data = (EntVariable1.get(),EntVariable2.get(),EntVariable3.get(),EntVariable4.get(),
-            EntVariable5.get(),EntVariable6.get(),EntVariable7.get(),EntVariable8.get())
+    d = int(((float(EntVariable1.get()) / (VALUES[ListaComponentesIBackup[0]])) * 25))
+    f = int(((float(EntVariable2.get()) / (VALUES[ListaComponentesIBackup[1]])) * 25))
+    c = int(((float(EntVariable3.get()) / (VALUES[ListaComponentesIBackup[2]])) * 25))
+    r = int(((float(EntVariable4.get()) / (VALUES[ListaComponentesIBackup[3]])) * 25))
+    ar = int(((float(EntVariable5.get()) / (VALUES2[ListaComponentesIBackup2[0]])) * 25))
+    ju = int(((float(EntVariable6.get()) / (VALUES2[ListaComponentesIBackup2[1]])) * 25))
+    jf = int(((float(EntVariable7.get()) / (VALUES2[ListaComponentesIBackup2[2]])) * 25))
+    ev = int(((float(EntVariable8.get()) / (VALUES2[ListaComponentesIBackup2[3]])) * 25))
+    nuevadata = [d, f, c, r, ar, ju, jf, ev]
+    explode = (0, 0.1, 0, 0, 0, 0, 0, 0)
+    labels = ListaComponentesIBackup[0], ListaComponentesIBackup[1], ListaComponentesIBackup[2], \
+             ListaComponentesIBackup[3], ListaComponentesIBackup2[0], ListaComponentesIBackup2[1], \
+             ListaComponentesIBackup2[2], ListaComponentesIBackup2[3]
     col = ('#0da0c1', '#e39106', '#25b413', '#b6e2ec', '#a0c10d', '#011013', '#310303', '252323')
-    _, _, arturo = pyplot.pie(data, colors=col, autopct='%1.1f%%')
+    _, _, arturo = pyplot.pie(nuevadata, explode=explode, labels=labels, colors=col, autopct='%1.1f%%')
     for tex in arturo:
         tex.set_color('white')
     pyplot.axis('equal')
@@ -325,42 +537,72 @@ def Valores():
 
 def VerificarVAlores():
 
-    cuvi = Turbiedad[random.randint(0,5)]
-
-    if ((EntVariable1.get() == "") or (EntVariable1.get() == "") or (EntVariable1.get() == "")
-        or (EntVariable1.get() == "") or (EntVariable1.get() == "") or (EntVariable1.get() == "") or (EntVariable1.get() == "") or
-        (EntVariable1.get() == "")):
-        messagebox.showwarning('CAUTION ','No se puede ejecutar el programa si no hay valores de entrada')
-    else:
-        Total1 = float(EntVariable1.get()) + float(EntVariable2.get()) + float(EntVariable3.get()) + float(EntVariable4.get())
-        Total2 = float(EntVariable5.get()) + float(EntVariable6.get()) + float(EntVariable7.get()) + float(EntVariable8.get())
-
-        if (Total1 > 3.29) and (Total2 > 0.47) and (cuvi > 5):
-            messagebox.showwarning('CAUTION ', 'Los valores orgánicos, inorgánicos y turbiedad del agua'
-                                               ' excenden el limite permitido en la calidad del agua')
+    EntradaRandom = ttk.Entry(middleframe)
+    EntradaRandom.grid(row=3, column=1)
 
 
-        elif (Total1 <= 3.29) and (Total2 <= 0.47) and (cuvi <= 5) :
-            messagebox.showinfo('VALUES', 'El sistema corrobora que la calidad del agua está con los parametros correctos')
-            BotonExcel = ttk.Button(middleframe, image=photo2, command=Save_file)
-            BotonExcel.grid(row=1, column=0, padx=10)
-            GraficasButton = ttk.Button(middleframe, image=photo6,command =Graficar)
-            GraficasButton.grid(row=0, column=1, padx=10)
 
 
-        elif (Total1 <= 3.29) and (Total2 <= 0.47) and (cuvi > 5) :
-            messagebox.showwarning('CAUTION', 'Los valores orgánicos e inorgánicos se encuentran optimos pero el nivel de turbiedad del'
-                                          ' agua no permite una calidad adecuada')
+    cuvi = Turbiedad[random.randint(0, 5)]
+    EntradaRandom.insert(0,cuvi)
+
+    while not False:
+        try:
+
+            EI1 = float(EntVariable1.get())  # PRIMERA ENTRADA DE LOS COMPONENTES INORGANICOS
+
+            EI2 = float(EntVariable2.get())  # SEGUNDA ENTRADA DE LOS COMPONENTES INORGANICOS
+
+            EI3 = float(EntVariable3.get())  # TERCERA ENTRADA DE LOS COMPONENTES INORGANICOS
+
+            EI4 = float(EntVariable4.get())  # CUARTA ENTRADA DE LOS COMPONENTES INORGANICOS
+
+            EI5 = float(EntVariable5.get())  # PRIMERA ENTRADA DE LOS COMPONENTES ORGANICOS
+
+            EI6 = float(EntVariable6.get())  # SEGUNDA ENTRADA DE LOS COMPONENTES ORGANICOS
+
+            EI7 = float(EntVariable7.get())  # TERCERA ENTRADA DE LOS COMPONENTES ORGANICOS
+
+            EI8 = float(EntVariable8.get())  # CUARTA ENTRADA DE LOS COMPONENTES ORGANICOS
+
+            Total1 = EI1 + EI2 + EI3 + EI4
+            Total2 = EI5 + EI6 + EI7 + EI8
+
+            if (Total1 > 3.29) and (Total2 > 0.47) and (cuvi > 5):
+                messagebox.showwarning('CAUTION ', 'Los valores orgánicos, inorgánicos y turbiedad del agua'
+                                                   ' excenden el limite permitido en la calidad del agua')
 
 
-        elif (Total1 <= 3.29) and (Total2 > 0.47):
-            messagebox.showwarning('CAUTION', 'Los valores orgánicos son los idóneos pero los valores inorgánicos se encuentran fuera del rango'
-                                              ' permitido')
+            elif (Total1 <= 3.29) and (Total2 <= 0.47) and (cuvi <= 5):
+                messagebox.showinfo('VALUES',
+                                    'El sistema corrobora que la calidad del agua está con los parametros correctos')
+                BotonExcel = ttk.Button(middleframe, image=photo2, command=Save_file)
+                BotonExcel.grid(row=1, column=0, padx=10)
+                GraficasButton = ttk.Button(middleframe, image=photo6, command=Graficar)
+                GraficasButton.grid(row=0, column=1, padx=10)
 
 
-        elif (Total1 > 3.29) and (Total2 <= 0.47):
-            messagebox.showwarning('CAUTION', 'Los valores inorgánicos son los idóneos pero los valores orgánicos se encuentran fuera del rango'
-                                              ' permitido')
+            elif (Total1 <= 3.29) and (Total2 <= 0.47) and (cuvi > 5):
+                messagebox.showwarning('CAUTION',
+                                       'Los valores orgánicos e inorgánicos se encuentran optimos pero el nivel de turbiedad del'
+                                       ' agua no permite una calidad adecuada')
+
+
+            elif (Total1 <= 3.29) and (Total2 > 0.47):
+                messagebox.showwarning('CAUTION',
+                                       'Los valores orgánicos son los idóneos pero los valores inorgánicos se encuentran fuera del rango'
+                                       ' permitido')
+
+
+            elif (Total1 > 3.29) and (Total2 <= 0.47):
+                messagebox.showwarning('CAUTION',
+                                       'Los valores inorgánicos son los idóneos pero los valores orgánicos se encuentran fuera del rango'
+                                       ' permitido')
+            break
+
+        except:
+            messagebox.showwarning('CAUTION ', 'No se puede ejecutar el programa si no hay valores de entrada')
+            break
 
 
 #============================================================================================
@@ -410,7 +652,7 @@ BotonInicio.grid(row=7, column=0, padx=10)
 
 # ===========================================ETIQUETAS ORGANICAS
 
-Labelorganico = ttk.Label(leftframe, text="VALORES INORGÁNICOS")
+Labelorganico = ttk.Label(leftframe, text="VALORES ORGÁNICOS")
 Labelorganico.grid (row =0, column=2)
 
 LabelImaginario3 = ttk.Label(leftframe) #LABEL IMAGINARIO
@@ -473,6 +715,23 @@ BotonInicio.grid(row=0, column=0, padx=10)
 
 GraficasButton1 = ttk.Button(middleframe, image=photo5, command= Valores  )
 GraficasButton1.grid(row=1, column=1, padx=10)
+
+
+LabelRAndom1 = ttk.Label(middleframe)  # LABEL IMAGINARIO
+LabelRAndom1.grid(row=2, column=0)
+
+labelrandom = ttk.Label(middleframe, text="TURBIEDAD")
+labelrandom.grid(row=3, column=0)
+
+LabelRAndom2 = ttk.Label(middleframe)  # LABEL IMAGINARIO
+LabelRAndom2.grid(row=2, column=1)
+
+labelexcel = ttk.Label(middleframe, text="NOMRE DEL ACHIVO A GUARDAR")
+labelexcel.grid(row=4, column=0)
+
+ENTRADAEXCEL = ttk.Entry(middleframe)
+ENTRADAEXCEL.grid(row=4, column=1)
+
 
 
 
