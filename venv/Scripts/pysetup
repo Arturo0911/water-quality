@@ -1,4 +1,0 @@
-#!C:\Users\Arturin\Desktop\CALIDAD DEL AGUA\venv\Scripts\python.exe
-import sys
-from distutils2.run import main
-sys.exit(main())
